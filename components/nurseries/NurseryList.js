@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react"
-import { getFetch } from "../NurseryApi"
+import { getNurseries } from "./NurseryApi"
 
 
 export const NurseryList = () => {
-    const [ nurseries, setNurseries ] = useState({}
+    const [ nurseries, setNurseries ] = useState([])
 
 
-    const getNurseries = () => {
-        return  getFetch(`http://localhost:8088/nurseries`)
-        .then(res => res.json())
-        .then((data) => {
-            setNurseries(data)
-        })
-    }
     useEffect(
         () => {
+            
             getNurseries()
+            .then((data) => {
+                setNurseries(data)
+            })
+        
         },
         []
+    )
+    useEffect(
+        () => {
+            console.log("nurseries changed: ", nurseries)
+        
+        },
+        [nurseries]
     )
         return (
             <>
@@ -25,7 +30,7 @@ export const NurseryList = () => {
             {
                 nurseries.map(
                 (nursery) => {
-                    return <p>{nursery.businessName}</p>
+                    return <h2>{nursery.businessName}</h2>
                 }
             )
             }
